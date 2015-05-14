@@ -128,7 +128,8 @@ void WalletFrame::setEncryptionStatus()
     walletStack->setEncryptionStatus();
 }
 
-void WalletFrame::updatePlot()
+void WalletFrame::updatePlot(int count)
 {
-    walletStack->updatePlot();
+    walletStack->updatePlot(count);
 }
+

@@ -138,7 +138,7 @@ OverviewPage::OverviewPage(QWidget *parent) :
         ui->diffplot->yAxis->setLabel(tr("Difficulty"));
 
         // set the pens
-        ui->diffplot->graph(0)->setPen(QPen(QColor(76, 76, 229)));
+        ui->diffplot->graph(0)->setPen(QPen(QColor(5, 168, 162)));
         ui->diffplot->graph(0)->setLineStyle(QCPGraph::lsLine);
 
         // set axes label fonts:
@@ -152,14 +152,16 @@ OverviewPage::OverviewPage(QWidget *parent) :
     }
 }
 
-void OverviewPage::updatePlot()
+void OverviewPage::updatePlot(int count)
 {
 	static int64_t lastUpdate = 0;
     // Double Check to make sure we don't try to update the plot when it is disabled
     if(!GetBoolArg("-chart", true)) { return; }
     if (GetTime() - lastUpdate < 60) { return; } // This is just so it doesn't redraw rapidly during syncing
 
-    int numLookBack = 4320;
+    // if(fDebug) { printf("Plot: Getting Ready: pidnexBest: %p\n", pindexBest); }
+
+    int numLookBack = 2000;
     double diffMax = 0;
     CBlockIndex* pindex = pindexBest;
     int height = nBestHeight;
@@ -174,9 +176,19 @@ void OverviewPage::updatePlot()
     vX.resize(numLookBack);
     vY.resize(numLookBack);
 
+    /*
+    if(fDebug) {
+        if(height != pindex->nHeight) {
+            printf("Plot: Warning: nBestHeight and pindexBest->nHeight don't match: %d:%d:\n", height, pindex->nHeight);
+        }
+    }
+
+    if(fDebug) { printf("Plot: Reading blockchain\n"); }
+    */
     CBlockIndex* itr = pindex;
     while(i >= 0 && itr != NULL)
     {
+        // if(fDebug) { printf("Plot: Processing block: %d - pprev: %p\n", itr->nHeight, itr->pprev); }
         vX[i] = itr->nHeight;
         vY[i] = GetDifficulty(itr);
         diffMax = std::max<double>(diffMax, vY[i]);
@@ -185,6 +197,8 @@ void OverviewPage::updatePlot()
         i--;
         x--;
     }
+
+    // if(fDebug) { printf("Plot: Drawing plot\n"); }
 
     ui->diffplot->graph(0)->setData(vX, vY);
 
@@ -199,7 +213,7 @@ void OverviewPage::updatePlot()
 
     ui->diffplot->replot();
 
-    lastUpdate = GetTime();
+    // if(fDebug) { printf("Plot: Done!\n"); }
 }
 
 void OverviewPage::handleTransactionClicked(const QModelIndex &index)

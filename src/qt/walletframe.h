@@ -71,7 +71,7 @@ public slots:
     void setEncryptionStatus();
 
     /** Update the plot on the overview (home) page */
-    void updatePlot();
+    void updatePlot(int count);
 };
 
 #endif // WALLETFRAME_H

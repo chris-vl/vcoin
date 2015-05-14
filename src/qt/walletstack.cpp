@@ -13,6 +13,7 @@
 
 WalletStack::WalletStack(QWidget *parent) :
     QStackedWidget(parent),
+    gui(0),
     clientModel(0),
     bOutOfSync(true)
 {
@@ -35,6 +36,10 @@ bool WalletStack::addWallet(const QString& name, WalletModel *walletModel)
     walletView->showOutOfSyncWarning(bOutOfSync);
     addWidget(walletView);
     mapWalletViews[name] = walletView;
+
+    // Ensure a walletView is able to show the main window
+	connect(walletView, SIGNAL(showNormalIfMinimized()), gui, SLOT(showNormalIfMinimized()));
+
     return true;
 }
 
@@ -155,11 +160,11 @@ void WalletStack::setCurrentWallet(const QString& name)
     walletView->setEncryptionStatus();
 }
 
-void WalletStack::updatePlot()
+void WalletStack::updatePlot(int count)
 {
     //we can't be sure that the view has loaded, so this needs
     //to be loaded in a manner that fails gracefully
     QMap<QString, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->updatePlot();
+        i.value()->updatePlot(count);         
 }

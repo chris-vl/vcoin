@@ -27,7 +27,7 @@ public:
     void setClientModel(ClientModel *clientModel);
     void setWalletModel(WalletModel *walletModel);
     void showOutOfSyncWarning(bool fShow);
-    void updatePlot();
+    void updatePlot(int count);
 
 public slots:
     void setBalance(qint64 balance, qint64 unconfirmedBalance, qint64 immatureBalance);

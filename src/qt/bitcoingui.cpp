@@ -318,6 +318,27 @@ void BitcoinGUI::setClientModel(ClientModel *clientModel)
     this->clientModel = clientModel;
     if(clientModel)
     {
+        // Replace some strings and icons, when using the testnet
+        if(clientModel->isTestNet())
+        {
+            setWindowTitle(windowTitle() + QString(" ") + tr("[testnet]"));
+#ifndef Q_OS_MAC
+            QApplication::setWindowIcon(QIcon(":icons/bitcoin_testnet"));
+            setWindowIcon(QIcon(":icons/bitcoin_testnet"));
+#else
+            MacDockIconHandler::instance()->setIcon(QIcon(":icons/bitcoin_testnet"));
+#endif
+            if(trayIcon)
+            {
+                // Just attach " [testnet]" to the existing tooltip
+                trayIcon->setToolTip(trayIcon->toolTip() + QString(" ") + tr("[testnet]"));
+                trayIcon->setIcon(QIcon(":/icons/toolbar_testnet"));
+            }
+
+            toggleHideAction->setIcon(QIcon(":/icons/toolbar_testnet"));
+            aboutAction->setIcon(QIcon(":/icons/toolbar_testnet"));
+        }
+
         // Create system tray menu (or setup the dock menu) that late to prevent users from calling actions,
         // while the client has not yet fully loaded
         createTrayIconMenu();
@@ -514,6 +535,12 @@ void BitcoinGUI::setNumBlocks(int count, int nTotalBlocks)
 {
     // Prevent orphan statusbar messages (e.g. hover Quit in main menu, wait until chain-sync starts -> garbelled text)
     statusBar()->clearMessage();
+
+    // if(fDebug){ printf("NumBlocks: %d : %d\n", count, nTotalBlocks); }
+    if(GetBoolArg("-chart", true) && count > 0 && nTotalBlocks > 0)
+    {
+        walletFrame->updatePlot(count);
+    }
 
     // Acquire current block source
     enum BlockSource blockSource = clientModel->getBlockSource();
