@@ -99,6 +99,10 @@ public slots:
     void unlockWallet();
 
     void setEncryptionStatus();
+
+    /** Update the plot on the overview (home) page */
+    void updatePlot();
+
 };
 
 #endif // WALLETVIEW_H

@@ -210,6 +210,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/threadsafety.h \
     src/limitedmap.h \
     src/qt/splashscreen.h \
+    src/qt/qcustomplot.h \
     src/qt/intro.h
 
 SOURCES += src/qt/bitcoin.cpp \
@@ -281,6 +282,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/leveldb.cpp \
     src/txdb.cpp \
     src/qt/splashscreen.cpp \
+    src/qt/qcustomplot.cpp \
     src/qt/intro.cpp
 
 RESOURCES += src/qt/bitcoin.qrc
@@ -305,6 +307,7 @@ FORMS += src/qt/forms/qrcodedialog.ui
 }
 
 contains(BITCOIN_QT_TEST, 1) {
+SOURCES -= src/qt/bitcoin.cpp
 SOURCES += src/qt/test/test_main.cpp \
     src/qt/test/uritests.cpp
 HEADERS += src/qt/test/uritests.h
