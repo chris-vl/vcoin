@@ -207,6 +207,7 @@ bool WalletView::handleURI(const QString& strURI)
     if (sendCoinsPage->handleURI(strURI))
     {
         gotoSendCoinsPage();
+        emit showNormalIfMinimized();
         return true;
     }
     else
@@ -272,3 +273,9 @@ void WalletView::unlockWallet()
         dlg.exec();
     }
 }
+
+void WalletView::updatePlot(int count)
+{
+    overviewPage->updatePlot(count);
+}
+

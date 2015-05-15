@@ -99,6 +99,13 @@ public slots:
     void unlockWallet();
 
     void setEncryptionStatus();
+
+    /** Update the plot on the overview (home) page */
+    void updatePlot(int count);
+
+signals:
+    /** Signal that we want to show the main window */
+    void showNormalIfMinimized();
 };
 
 #endif // WALLETVIEW_H
