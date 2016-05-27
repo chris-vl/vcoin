@@ -33,7 +33,7 @@ How to compile vcoind on ubuntu
 - cd vcoin 
 
 
-    cd src; make -f makefile.unix 
+    cd src make -f makefile.unix 
 
 
  for the GUI compile `cd vcoin`. To compile and run them:
