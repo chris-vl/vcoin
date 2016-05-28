@@ -7,3 +7,8 @@ implementation of Bitcoin.
 See doc/build-*.md for instructions on building bitcoind,
 the intended-for-services, no-graphical-interface, reference
 implementation of Bitcoin.
+
+
+sudo apt-get update 
+sudo apt-get install git build-essential libssl-dev libboost-all-dev libdb++-dev libminiupnpc-dev qt-sdk -y
+cd vcoin/src && make -f makefile.unix USE_UPNP=0 && cd .. && qmake "USE_UPNP=0" && make
